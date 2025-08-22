@@ -1,0 +1,3 @@
+1. To use this config, use the latest version of neovim from the official https://github.com/neovim/neovim-releases/releases
+2. Now copy the nvim folder to the ~/.config/ folder. So this stands for copying the nvim configuration /home/.config/
+3. NOTE: make sure you are using neovim vesion greater than 0.10.0
