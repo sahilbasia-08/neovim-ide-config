@@ -1,0 +1,252 @@
+-- ~/.config/nvim/lua/config/plugins.lua
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+
+  -- File explorer
+  "preservim/nerdtree",
+
+  -- Status line
+  "vim-airline/vim-airline",
+  "vim-airline/vim-airline-themes",
+
+  -- FZF
+  { "junegunn/fzf", build = "./install --all" },
+  "junegunn/fzf.vim",
+
+  -- Git
+  "tpope/vim-fugitive",
+  "airblade/vim-gitgutter",
+  "rbong/vim-flog",
+
+  -- Auto-closing brackets
+  "jiangmiao/auto-pairs",
+
+  -- Icons
+  "ryanoasis/vim-devicons",
+
+  -- Commenting
+  "preservim/nerdcommenter",
+
+  -- Surround
+  "tpope/vim-surround",
+
+  -- Indent guides
+  "nathanaelkane/vim-indent-guides",
+
+  -- Session management
+  "tpope/vim-obsession",
+
+  -- Formatter
+  "Chiel92/vim-autoformat",
+
+  -- Themes
+  "morhetz/gruvbox",
+  "sainnhe/sonokai",
+  "sainnhe/everforest",
+  "sainnhe/edge",
+  "joshdick/onedark.vim",
+  "arcticicestudio/nord-vim",
+  { "dracula/vim", name = "dracula" },
+  "ghifarit53/tokyonight-vim",
+  "chriskempson/base16-vim",
+  "crusoexia/vim-monokai",
+  "kaicataldo/material.vim",
+  "mhartington/oceanic-next",
+  "NLKNguyen/papercolor-theme",
+  "ayu-theme/ayu-vim",
+  "rakr/vim-one",
+
+  -- ✅ Modern, Neovim-compatible Cscope Mappings
+--  {
+--    "chazy/cscope_maps.vim",
+--    config = function()
+--      vim.g.cscope_maps_disable_maps = 0   -- enable default maps like <C-\>g
+--      vim.g.cscope_maps_load_on_setup = 1  -- auto-load cscope.out if exists
+--    end
+--  },
+
+  -- ✅ Kanagawa theme (with all variants: dragon, lotus, wave)
+  --{
+  --  "rebelot/kanagawa.nvim",
+  --  name = "kanagawa",
+  --  priority = 1000,
+  --  config = function()
+  --    require("kanagawa").setup({
+  --      compile = false,
+  --      theme = "wave", -- variants: "wave", "dragon", "lotus"
+  --      background = {
+  --        dark = "wave",
+  --        light = "lotus"
+  --      }
+  --    })
+  --    vim.cmd("colorscheme kanagawa")
+  --  end
+  --},
+  
+  {
+  "rebelot/kanagawa.nvim",
+  name = "kanagawa",
+  priority = 1000,
+  config = function()
+    require("kanagawa").setup({
+      compile = false,             -- enable compiling the colorscheme
+      undercurl = true,            -- enable undercurls
+      commentStyle = { italic = true },
+      functionStyle = {},
+      keywordStyle = { italic = true },
+      statementStyle = { bold = true },
+      typeStyle = {},
+      transparent = false,         -- do not set background color
+      dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+      terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+      colors = {                   -- add/modify theme and palette colors
+        palette = {},
+        theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+      },
+      overrides = function(colors) -- add/modify highlights
+        return {}
+      end,
+      theme = "wave",              -- Load "wave" theme when 'background' option is not set
+      background = {               -- map the value of 'background' option to a theme
+        dark = "wave",             -- try "dragon" !
+        light = "lotus"
+      },
+    })
+    vim.cmd("colorscheme kanagawa")
+  end
+  },
+
+
+  {
+  "dhananjaylatkar/cscope_maps.nvim",
+  dependencies = { "folke/which-key.nvim" }, -- optional
+  config = function()
+    require("cscope_maps").setup({
+      skip_input_prompt = true,
+      cscope = {
+        db_file = "cscope.out",
+        exec = "cscope", -- or "gtags-cscope"
+        use_telescope = true, -- integrates with telescope if available
+      },
+    })
+  end
+ },
+
+
+ -- bracket match
+ {
+  "andymass/vim-matchup",
+  init = function()
+    -- Enables extended highlighting (match all brackets)
+    vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    vim.g.matchup_matchparen_deferred = 1
+    vim.g.matchup_matchparen_hi_surround_always = 1
+  end
+ },
+    
+ -- code prettier
+ {
+  "stevearc/conform.nvim",
+  config = function()
+    require("conform").setup({
+      formatters_by_ft = {
+        c = { "clang_format" },
+        cpp = { "clang_format" },
+      },
+    })
+
+    -- Optional: Format on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
+      callback = function(args)
+        require("conform").format({ bufnr = args.buf })
+      end,
+    })
+  end
+ },
+ -- git gutters
+ {
+  "lewis6991/gitsigns.nvim",
+  config = function()
+    require("gitsigns").setup({
+      signs = {
+        add          = { text = "│" },
+        change       = { text = "│" },
+        delete       = { text = "_" },
+        topdelete    = { text = "‾" },
+        changedelete = { text = "~" },
+      },
+      preview_config = {
+        border = "rounded",
+        style = "minimal",
+        relative = "cursor",
+        row = 0,
+        col = 1
+      },
+    })
+  end
+ },
+
+ -- lazy.nvim example
+ {
+  "lukas-reineke/virt-column.nvim",
+  opts = {
+    char = "│",
+    virtcolumn = "", -- dynamically calculate based on window
+  },
+ },
+
+ {
+  'numToStr/Comment.nvim',
+  config = function()
+    require('Comment').setup()
+  end
+ },
+
+ {
+  'mg979/vim-visual-multi',
+  branch = 'master'
+ },
+
+ {
+  "ojroques/nvim-osc52",
+  config = function()
+    local osc52 = require("osc52")
+    osc52.setup({
+      max_length = 0,       -- no limit
+      silent = true,        -- no message
+      trim = false,
+    })
+
+    -- Copy on y/yank in visual and normal mode
+    local function copy()
+      if vim.v.event.operator == "y" and vim.v.event.regname == "" then
+        require("osc52").copy_register("")
+      end
+    end
+    vim.api.nvim_create_autocmd("TextYankPost", { callback = copy })
+  end,
+ },
+
+-- init.lua or plugins/indentline.lua
+ {
+  "lukas-reineke/indent-blankline.nvim",
+  version = "^3",         -- make sure it's v3+
+  main = "ibl",           -- required for v3!
+  opts = {},
+ },
+ 
+ {
+  "tpope/vim-sleuth",
+  event = "BufReadPre",  -- lazy-load when opening files
+ },
+
+ {
+  "tpope/vim-surround",
+  event = "VeryLazy",  -- lazy load
+ },
+})
+

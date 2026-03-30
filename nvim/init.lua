@@ -12,6 +12,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Your existing configuration comes AFTER this
+-- For example: require("config"):
+
 require("config")
 
 --vim.cmd([[set showmatch]])

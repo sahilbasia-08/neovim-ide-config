@@ -1,0 +1,85 @@
+-- ~/.config/nvim/lua/config/keymaps.lua
+
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+
+-- NERDTree
+map("n", "<C-n>", ":NERDTreeToggle<CR>", opts)
+
+-- FZF
+map("n", "<C-p>", ":Files<CR>", opts)
+map("n", "<leader>ff", ":Files<CR>", opts)
+
+-- Buffers
+map("n", "<Tab>", ":bnext<CR>", opts)
+map("n", "<S-Tab>", ":bprevious<CR>", opts)
+
+-- Git
+map("n", "<leader>gs", ":G<CR>", opts)
+map("n", "<leader>gb", ":G blame<CR>", opts)
+map("n", "<leader>gl", ":Flog<CR>", opts)
+map("n", "<leader>gc", ":G commit<CR>", opts)
+map("n", "<leader>gp", ":G push<CR>", opts)
+
+-- GitGutter
+map("n", "]g", ":GitGutterNextHunk<CR>", opts)
+map("n", "[g", ":GitGutterPrevHunk<CR>", opts)
+map("n", "<leader>hp", ":GitGutterPreviewHunk<CR>", opts)
+map("n", "<leader>hs", ":GitGutterStageHunk<CR>", opts)
+map("n", "<leader>hu", ":GitGutterUndoHunk<CR>", opts)
+
+-- Tag Navigation
+map("n", "gd", ":cs find g <C-R>=expand('<cword>')<CR><CR>", opts)
+map("n", "gs", ":cs find s <C-R>=expand('<cword>')<CR><CR>", opts)
+map("n", "gD", ":cs find d <C-R>=expand('<cword>')<CR><CR>", opts)
+map("n", "gC", ":cs find c <C-R>=expand('<cword>')<CR><CR>", opts)
+map("n", "gt", ":cs find t <C-R>=expand('<cword>')<CR><CR>", opts)
+
+map("n", "<leader>d", "<C-]>", opts)
+map("n", "<leader>B", "<C-T>", opts)
+map("n", "<leader>s", ":ts <C-R>=expand('<cword>')<CR><CR>", opts)
+map("n", "<leader>i", ":edit <cfile><CR>", opts)
+map("n", "<leader>b", "<C-o>", opts)
+map("n", "<leader>f", "<C-i>", opts)
+
+-- Formatting
+map("n", "<leader>f", ":Autoformat<CR>", opts)
+
+-- Commenting (Ctrl + /)
+map("n", "<C-_>", ":call nerdcommenter#Comment(0, 'toggle')<CR>", opts)
+map("v", "<C-_>", ":call nerdcommenter#Comment(0, 'toggle')<CR>", opts)
+
+vim.keymap.set("n", "<leader>cf", function()
+  require("conform").format()
+end, { desc = "Format C/C++ with clang-format" })
+
+
+-- GIT COMMANDS
+-- Hunk navigation
+vim.keymap.set("n", "]g", "<cmd>Gitsigns next_hunk<CR>", { desc = "Next Git hunk" })
+vim.keymap.set("n", "[g", "<cmd>Gitsigns prev_hunk<CR>", { desc = "Prev Git hunk" })
+
+-- Hunk preview
+vim.keymap.set("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Preview hunk" })
+
+-- Stage / Undo
+vim.keymap.set("n", "<leader>hs", "<cmd>Gitsigns stage_hunk<CR>", { desc = "Stage hunk" })
+vim.keymap.set("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>", { desc = "Undo staged hunk" })
+
+vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit<CR>", { noremap = true, silent = true, desc = "Git vertical diff split" })
+
+require('Comment').setup {
+  toggler = {
+    line = 'gcc',
+    block = 'gbc',
+  },
+  opleader = {
+    line = 'gc',
+    block = 'gb',
+  },
+  mappings = {
+    basic = true,
+    extra = false,
+  },
+}
+

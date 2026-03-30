@@ -126,3 +126,48 @@ map("n", "<leader>vm", "<cmd>VMtoggle<CR>", opts)
 -----------------------------------------------------------------------
 map("n", "<leader>;", "<cmd>Dashboard<CR>", opts) -- open dashboard any time
 
+-- Ensure this is at the top of your file!
+local keymap = vim.keymap.set
+
+-- 1. Load Template File Shortcut with Safety Check
+keymap('n', '<leader>tp', function()
+    -- Check if the current buffer can be modified first
+    if not vim.opt.modifiable:get() then
+        print("Error: This buffer is not modifiable!")
+        return
+    end
+
+    local template_path = vim.fn.expand("~/.config/nvim/templates/cp_template1.cpp")
+    if vim.fn.filereadable(template_path) == 1 then
+        -- silent! prevents the error from stopping execution if something goes wrong
+        vim.cmd("silent! %delete")
+        vim.cmd("0read " .. template_path)
+        -- Move cursor to the end of the file or solve function
+        print("Template loaded! Good luck, Sahil.")
+    else
+        print("Template file not found at: " .. template_path)
+    end
+end, { desc = "Load CP Template" })
+
+-- 2. Build and Run (g++ with input.txt -> output.txt)
+keymap('n', '<leader>b', function()
+    vim.cmd("write") 
+    
+    -- Ensure input file exists so g++ doesn't hang
+    if vim.fn.filereadable("input.txt") == 0 then
+        vim.fn.writefile({}, "input.txt")
+    end
+
+    -- Compiles with g++ and redirects I/O
+    local compile_run = "!g++ -O3 -Wall % -o %< && ./%< < input.txt > output.txt"
+    vim.cmd(compile_run)
+    print("Execution Finished. Check output.txt")
+end, { desc = "Build and Run against input.txt" })
+
+-- 3. Open Input/Output splits for quick viewing
+keymap('n', '<leader>io', function()
+    vim.cmd("vsplit input.txt")
+    vim.cmd("split output.txt")
+    print("I/O Windows Opened.")
+end, { desc = "Open Input/Output splits" })
+

@@ -14,7 +14,7 @@ vim.opt.showmatch = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.mouse = "a"
 vim.opt.ruler = true
-vim.opt.background = "dark"
+vim.opt.background = "light"
 vim.opt.tags = "./tags,tags"
 vim.opt.path:append("**")
 vim.opt.wildignore:append("*/.git/*,*/build/*")
@@ -67,7 +67,9 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- customer color scheme
-vim.cmd("colorscheme kanagawa2")
+--vim.cmd("colorscheme kanagawa2")
+vim.cmd("colorscheme PaperColor")
+--vim.cmd("colorscheme kanagawa-lotus")
 
 -- related to whitespaces and tabs related stuff
 vim.cmd [[
